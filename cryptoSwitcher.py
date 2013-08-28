@@ -79,6 +79,7 @@ coins['ryc'] =  Coin('RoyalCoin')
 coins['trc'] =  Coin('TerraCoin')
 coins['wdc'] =  Coin('Worldcoin')
 coins['yac'] =  Coin('YaCoin')
+coins['zet'] = Coin('ZetaCoin') # Our coin of choice added
 # Merged
 coins['dvc'] =  Coin('Devcoin')
 coins['dvc'].merged = True
@@ -429,6 +430,12 @@ while True:
                         req = urllib2.Request("http://cryptocoinexplorer.com:3750/chain/Terracoin/q/getdifficulty")
                         f = opener.open(req, timeout = 5)
                         coins['trc'].diff = simplejson.load(f)
+                    
+                    if abbreviation == 'zet':
+                        req = urllib2.Request("http://184.169.153.199:2750/chain/ZetaCoin/q/getdifficulty")
+                        f = opener.open(req, timeout = 5)
+                        coins['zet'].diff = simplejson.load(f)
+
 
                     # for btc: we dont need to calculate
                     if abbreviation=='btc':
@@ -604,7 +611,7 @@ while True:
         for abbreviation, c in coins.items():
             c.miningNow = False
         coins[bestcoin].miningNow = True
-        subprocess.Popen(coins[bestcoin].command)
+        subprocess.Popen([coins[bestcoin].command, bestcoin])
 
     # Sell some coins if that's what we're into
     for abbreviation, c in coins.items():
